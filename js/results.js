@@ -77,6 +77,30 @@ let recommendations = {
 		title: "Saving for education",
 		brief: "If you want to pay for college, trade school, private K-12 school, apprenticeships, or student loans, whether for yourself or someone else, you should consider using a 529 plan Education Savings Account (ESA). Growth in an ESA isn't taxed if it's withdrawn for eligible education expenses. This makes it a great way to save for future education expenses."
 	},
+	mortgagepayments : {
+		title: "Consider paying off your mortgage",
+		brief: "Mortgages are one of the lowest cost loans available. For most people with over a decade of working years ahead of them, there are higher expected returns investing in the stock market. It might be worth paying off your mortgage faster instead if you are close to retirement, have low risk tolerance, or think that the peace of mind knowing that your home is paid off is more valuable than potentially higher returns of investing in the stock market."
+	},
+	taxablebrokerage : {
+		title: "Invest in a regular brokerage account",
+		brief: "If you've got more money left over after maxing all the tax-advantaged accounts that are available to you and relevant to your investing goals, it might make sense to use a regular brokerage account. The only limit to how much you can invest in a regular brokerage account is the amount of money you have available to invest. Once the other options are maxed, this is the go-to option."
+	},
+	taxharvesting : {
+		title: "Flex your inner farmer",
+		brief: "Short-term losses provide the biggest benefit because they offset short-term gains, which are taxed at a higher marginal rate. Conversely, short-term losses are least effective when used to offset long-term gains. Note that whether the loss is short- or long-term, it must be used to offset a gain of the same time first before it can be applied to the other. Even if you didn't realize any gains this year, it can still be effective to realize your losses because a portion may be used to offset some ordinary income, and the remaining can be carried forward to future years."
+	},
+	lowinterestdebts : {
+		title: "Debt is heavy on the mind",
+		brief: "\"Low-interest\" debt is typically considered as debt that is below the average rate-of-return for the stock market over time, which is about 7% adjusted for inflation. Many people have low-interest debts designed to be repaid over a long time in the form of mortgages or student loans. By definition, it's better to invest your money than pay off low-interest debt agressively, however there can be an emotional toll to debt. Evaluate if it is worthwhile to allocate <em>some, but not all</em> of your excess cash to paying off your low-interest debt early."
+	},
+	donoradvisedfunds : {
+		title: "Efficient charity with donor-advised funds",
+		brief: "You don't have to be wealthy to open a donor-advised fund. Donor-advised funds are assets set aside for donation over time which are managed by a sponsoring organization. Assets include: cash, stocks, bonds, mutual funds, IRAs, 401Ks, private company stock, cryptocurrency, and life insurance. DAFs are an efficient donation vehicle because they avoid capital gains tax on stocks, bonds and mutual funds by donating the asset itself, rather than selling the asset and donating the proceeds, post-tax. To get the most out of them, donate assets that have grown substantially - the current value of the assets is tax deductible and you avoid paying taxes on the growth."
+	},
+	rebalanceportfolio : {
+		title: "It's a juggling act",
+		brief: "Your asset risk should reflect your risk tolerance. Over time, investments will grow and shrink. Rebalancing your portfolio nudges it back to the initial asset ratios through buying and selling. Rebalancing strategies include ongoing maintenance, focusing on rebalancing your largest account, and treating each account as a separate fully-balanced portfolio. You may choose to rebalance in April (tax-season), December (tax-loss harvesting season), when an investment shifts >5% or never."
+	},
 	
 }
 class ResultsCardBuilder{
