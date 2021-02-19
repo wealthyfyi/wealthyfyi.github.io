@@ -162,6 +162,7 @@ class Question extends FormQuestion{
 	constructor(formId, question, completionCallback){
 		super(formId, question);
 		this.onCompletion = completionCallback;
+		this.question = question["question"];
 		this.name = question["name"];
 		this.answers = question["answers"];
 		this.formElement.onsubmit = (e) =>{e.preventDefault();};
@@ -203,7 +204,13 @@ class Question extends FormQuestion{
 
 		// Pull answers from this question
 		let answerelements = Array.from(document.getElementsByClassName("form__" + this.inputType + "-input"));
-
+		let sendAnalyticsEvent = (name, answer) => { 
+			gtag('event', 'FinancialCheckupQA' ,{
+			'QuestionID' : name,
+			'Question' : this.question,
+			'Answer' : answer
+			});
+		};
 		//add the current answers to the URLSearchParams
 		// We use the history API for this so that:
 		// 1. The back button works to take the user back by 1 question
@@ -212,17 +219,20 @@ class Question extends FormQuestion{
 		if("text" == this.inputType || "number" == this.inputType){
 			answerelements.forEach((element) =>{
 				searchParams.set(element.getAttribute("name"), element.value);
+				sendAnalyticsEvent(element.getAttribute("name"),element.value);
 			});
 			} else if ("radio" == this.inputType){
 				answerelements.forEach((element) =>{
 					if(element.checked){
 						searchParams.set(element.getAttribute("name"), element.id);
+						sendAnalyticsEvent(element.getAttribute("name"),document.querySelector(`label[for='${element.id}']`).innerHTML);
 					}
 				});
 			}else if("checkbox" == this.inputType){
 				answerelements.forEach((element) =>{
 					if(element.checked){
 						searchParams.set(element.getAttribute("name"), "checked");
+						sendAnalyticsEvent(element.getAttribute("name"),document.querySelector(`label[for='${element.id}']`).innerHTML);
 					} else{
 						searchParams.delete(element.getAttribute("name"));
 					}
@@ -581,7 +591,7 @@ const questions = [
 	},
 	{
 		"id" : 3,
-		"question" : "Do you have enough income to cover essential expenses (rent, groceries, utilities, healthcare, etc.) each month?",
+		"question" : "Do you have enough income to cover essential expenses (e.g., rent, groceries, utilities, healthcare, etc.) each month?",
 		"type" : "radio",
 		"name" : "essential-expenses",
 		"answers":[
@@ -641,7 +651,7 @@ const questions = [
 	},
 	{
 		"id" : 6,
-		"question" : "Have you contributed enough to your employer sponsered retirement account to get the full employer match?",
+		"question" : "Have you contributed enough to your employer-sponsored retirement account to get the full employer match?",
 		"type" : "radio",
 		"name" : "employermatch",
 		"answers": [
@@ -698,7 +708,7 @@ const questions = [
 	},
 	{
 		"id" : 9,
-		"question" : "Do you have a HSA-qualified high-deductible health plan and are eligible for an HSA?",
+		"question" : "Do you have an HSA-qualified high-deductible health plan and are eligible for an HSA?",
 		"type" : "radio",
 		"name" : "hsaeligible",
 		"answers": [

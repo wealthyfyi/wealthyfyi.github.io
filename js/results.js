@@ -41,6 +41,22 @@ let recommendations = {
 		title: "Pay down high-interest loans",
 		brief: "\"High-interest\" debt is debt that is above the average rate-of-return for the stock market over time, which is about 7% adjusted for inflation. Investments have risk, whereas paying off high-interest debt does not."
 	},
+	avalancheMethod : {
+		title: "Efficiently escape debt:",
+		brief: "Make the minimum payments on all of your debts, then use any remaining money to pay off the debt with the highest interest rate. This method of paying off debt will save you the most money in interest payments."
+	},
+	increaseEfund1 : {
+		title:"Increase your emergency fund",
+		brief: "You should already have $1000 set aside for small surprises. An emergency fund should cover 3-6 months of living expenses, e.g., housing, food, healthcare, transportation, and debt payments. Emergency funds do not cover unnecessary costs like entertainment, dining out, vacations, and secondary savings goals. An emergency fund reduces stress, prevents impulse spending, and safeguards you from poor financial decisions."
+	},
+	increaseEfund2 : {
+		title: "Increase your emergency fund",
+		brief: "You should already have $1000 set aside for small surprises. An emergency fund should typically cover 3-6 months of living expenses. However, some situations call for more. Consider increasing your safety net to 6-12 months of expenses if you have unsteady income, low employment security, you're experiencing a recession, or are already retired. Emergency funds do not cover unnecessary costs like entertainment, dining out, vacations, and secondary savings goals. An emergency fund reduces stress, prevents impulse spending, and safeguards you from financial decisions."
+	},
+	reduceInterestRate : {
+		title: "Reduce your interest rates",
+		brief: "Interest rates cause your debt to grow, making it more difficult to escape debt.  Reducing your interest rate will save you money over time. Strategies available for lowering interest rates depend on the type of debt that you have."
+	},
 	hsafees1 : {
 		title: "Give your HSA a health check",
 		brief: "While the Health Savings Account (HSA) is the best investment account in America, not all are created equal. Check if switching to another HSA provider could lower your fees."
@@ -52,6 +68,14 @@ let recommendations = {
 	evaluateiratype : {
 		title: "Traditional or Roth IRA?",
 		brief: "Individual Retirement Accounts (IRAs) provide tax incentives to encourage you to save for your future. Contributions to a Traditional IRA reduce your tax bill now. Contributing to a Roth account reduces your tax bill in the future. Use a Roth account if you expect your income to go up; otherwise, a Traditional IRA is better."
+	},
+	rolloverira : {
+		title: "Rollover your Traditional IRA to a Roth IRA",
+		brief: "The federal government restricts high earners from contributing to a Roth IRA, but there's a loophole! If your income is above the limit (congratulations!), you can create a \"Backdoor\" Roth IRA. Convert your Traditional IRA to a Roth IRA to avoid tax on growth. You will need to pay tax on growth your money made while in the traditional IRA and cannot claim a deduction for the Traditional IRA contributions."
+	},
+	backdoor : {
+		title: "Use the \"Backdoor\"",
+		brief: "The federal government restricts high earners from contributing to a Roth IRA, but there's a loophole! If your income is above the limit (congratulations!), you can create a \"Backdoor\" Roth IRA. First, put your money in a traditional IRA. Then, immediately convert your contribution to a Roth IRA to avoid tax on growth while in the Traditional IRA. You will not be able to claim a deduction for the contribution to the Traditional IRA."
 	},
 	maxira : {
 		title: "Max out that IRA",
@@ -104,12 +128,7 @@ let recommendations = {
 	rebalanceportfolio : {
 		title: "Rebalancing your portfolio",
 		brief: "Your assets should reflect your risk tolerance. Over time, investments will grow and shrink. Rebalancing your portfolio nudges it back to the initial asset ratios through buying and selling."
-	},
-	rolloverira:{
-		title: "Roll over your IRA to a Roth",
-		brief: "@@TODO"
 	}
-	
 }
 class ResultsCardBuilder{
 	constructor(resultKey, resultsObj){
