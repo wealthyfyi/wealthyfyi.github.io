@@ -278,12 +278,22 @@ class FinancialCheckup{
 	constructor(formId, questions){
 		this.formId = formId;
 		this.formElement = document.getElementById(this.formId);
+		this.clearFormChildren();
 		this.questions = questions;
-		this.nextQ = 1;
+		const searchParams = new URLSearchParams(window.location.search);
+		if(searchParams.has('q')){
+			this.nextQ = parseInt(searchParams.get('q'));
+		}else{
+			this.nextQ = 1;
+		}
 		this.results = new FinancialHealthFeedback();
 		this.nextquestion(this.nextQ);
 	}
-
+	clearFormChildren(){
+		while(this.formElement.hasChildNodes()){
+			this.formElement.removeChild(this.formElement.firstChild);
+		}
+	}
 	formtransitionout(){
 		// Remove the form elements from this question
 		this.formTransitions = this.formElement.style.transition;
@@ -345,10 +355,10 @@ class FinancialCheckup{
 		if(false && "married" == filingStatus){
 			if(193000 < income){
 				if(maxedTraditionalIRA){
-					this.results.recommendations = "rolloverira";
+					this.results.recommendations = "rolloverIra";
 					return 14;
 				} else if(!maxedRothIRA){
-					this.results.recommendations = "backdoorroth";
+					this.results.recommendations = "backdoorRoth";
 					return NaN;
 				}
 			}
@@ -356,15 +366,15 @@ class FinancialCheckup{
 		else{ // user is filing as single
 			if(122000 < income){
 				if(maxedTraditionalIRA){
-					this.results.recommendations = "rolloverira";
+					this.results.recommendations = "rolloverIra";
 					return 14;
 				} else if(!maxedRothIRA){
-					this.results.recommendations = "backdoorroth";
+					this.results.recommendations = "backdoorRoth";
 					return NaN;
 				}
 			}else if(64000 < income){
 				if(!maxedTraditionalIRA && !maxedRothIRA){
-					this.results.recommendations = "maxrothira";
+					this.results.recommendations = "maxRothIra";
 					return NaN;
 				}
 			}
@@ -413,12 +423,12 @@ class FinancialCheckup{
 
 		if(stableJob){
 			if(3 > emergencyFundMonths){
-				this.results.recommendations = "increaseefund";
+				this.results.recommendations = "increaseEfund1";
 				return NaN;
 			}else if(3 <= emergencyFundMonths){
-				this.results.kudos = "efundkudo1";
+				this.results.kudos = "efundKudo";
 				if(hasModerateInterestDebt){
-					this.results.recommendations = "reduceinterestrate";
+					this.results.recommendations = "reduceInterestRate";
 					this.results.recommendations = "avalancheMethod";
 					return NaN;
 				}else{
@@ -427,20 +437,20 @@ class FinancialCheckup{
 			}
 		}else{ // unstable job
 			if(6 > emergencyFundMonths){
-				this.results.recommendations = "increaseefund";
+				this.results.recommendations = "increaseEfund2";
 				return NaN;
 			} else if(hasModerateInterestDebt){
 				this.results.recommendations = "reduceinterestrate";
 				this.results.recommendations = "avalancheMethod";
 				if(12 < emergencyFundMonths){
-					this.results.kudos = "efundkudo1";
+					this.results.kudos = "efundKudo";
 				}
 				return NaN;
 			}else if(12 > emergencyFundMonths){
-				this.results.recommendations = "increaseefund";
+				this.results.recommendations = "increaseEfund2";
 				return 9;
 			} else { // efund is 1 year or more, no moderate interest debt
-				this.results.kudos = "efundkudo1";
+				this.results.kudos = "efundKudo";
 				return 9;
 			}
 		}
@@ -451,7 +461,13 @@ class FinancialCheckup{
 		if(!searchParams.has("employermatch")){
 			console.error("Question about employer-sponsored retirement account was missed.");
 		}
-
+		if("employermatch-0" == searchParams.get("employermatch")){
+			// If they have a 401(K), check if it has a mega backdoor
+			return 16;
+		} else{
+			// If they don't have a 401(K) they don't have a mega backdoor
+			return 17;
+		}
 	}
 	onquestioncomplete(){
 		// Pull the answers from the question
@@ -479,12 +495,10 @@ class FinancialCheckup{
 			case 12:
 				workingNextQ = this.handleSalary();
 				break;
-				//@@TODO: check if they have access to an employer sponsored retirement account.
-				/*
 			case 15:
 				workingNextQ = this.handleLargePurchases();
 				break;
-				*/
+				
 		}
 
 		// add any kudos and recommendations to the results
@@ -536,7 +550,10 @@ class FinancialCheckup{
 			window.location.assign('results.html?' + searchParams.toString());
 			return;
 		}
+		let searchParams = new URLSearchParams(window.location.search);
 		this.questionIndex = this.nextQ - 1;
+		searchParams.set("q",this.nextQ);
+		history.replaceState(null,'',window.location.pathname + '?' + searchParams.toString());
 		this.currentQuestion = new Question(this.formId, this.questions[this.questionIndex], this.onquestioncomplete.bind(this));
 	}
 }
@@ -573,19 +590,19 @@ const questions = [
 		"answers" : [
 			{
 				"label" : "I spend more than I make",
-				"recommendation" : ["spendless"],
+				"recommendation" : ["spendLess"],
 				"nextQ" : NaN,
 				"input-attributes" : {"required":true}
 			},
 			{
 				"label" : "I spend as much as I make",
 				"nextQ" : 4,
-				"recommendation": ["spendless"]
+				"recommendation": ["spendLess"]
 			},
 			{
 				"label" : "I spend less than I make",
 				"nextQ" : 4,
-				"kudos": ["budget1"]
+				"kudos": ["budget"]
 			}
 		]
 	},
@@ -621,15 +638,15 @@ const questions = [
 				"label" : "1-2 months"
 			},
 			{
-				"label" : "3-6 months"
+				"label" : "3-5 months"
 			},
 			{
 				"label" : "6-11 months",
-				"kudos" : ["efundkudo1"]
+				"kudos" : ["efundKudo"]
 			},
 			{
 				"label" : "More than 12 months",
-				"kudos" : ["efundkudo1"]
+				"kudos" : ["efundKudo"]
 			}
 		]
 	},
@@ -653,17 +670,17 @@ const questions = [
 		"id" : 6,
 		"question" : "Have you contributed enough to your employer-sponsored retirement account to get the full employer match?",
 		"type" : "radio",
-		"name" : "employermatch",
+		"name" : "employermatchmax",
 		"answers": [
 			{
 				"label" : "Yes",
-				"kudos" : ["employermatchkudo1"],
+				"kudos" : ["employerMatchKudo"],
 				"input-attributes" : {"required":true}
 			},
 			{
 				"label" : "No",
 				"nextQ" : NaN,
-				"recommendation" : ["employermatch1"]
+				"recommendation" : ["employerMatch"]
 			}
 		]
 	},
@@ -676,7 +693,7 @@ const questions = [
 			{
 				"label" : "High-interest debt e.g., credit card debt",
 				"nextQ" : NaN,
-				"recommendation" : ["highinterest1"],
+				"recommendation" : ["highInterest", "avalancheMethod"],
 				"input-attributes" : {"required":true}
 			},
 			{
@@ -687,7 +704,7 @@ const questions = [
 			},
 			{
 				"label" : "None",
-				"kudos" : ["debtfreekudo1"]
+				"kudos" : ["debtFreeKudo"]
 			}
 		]
 	},
@@ -730,14 +747,14 @@ const questions = [
 		"answers": [
 			{
 				"label" : "Yes",
-				"kudos" : ["hsamaxkudo1"],
-				"recommendation" : ["hsafees1"],
+				"kudos" : ["hsaMaxKudo"],
+				"recommendation" : ["hsaFees"],
 				"input-attributes" : {"required":true}
 			},
 			{
 				"label" : "No",
 				"nextQ" : NaN,
-				"recommendation" : ["hsamax1", "hsafees1"]
+				"recommendation" : ["hsaMax", "hsaFees"]
 			}
 		]
 	},
@@ -749,10 +766,12 @@ const questions = [
 		"answers": [
 			{
 				"label" : "Yes, my Traditional IRA",
+				"kudos" : ["maxTraditionalIRAKudo"],
 				"input-attributes" : {"required":true}
 			},
 			{
 				"label" : "Yes, my Roth IRA",
+				"kudos" : ["maxRothIRAKudo"],
 				"nextQ" : 14
 			},
 			{
@@ -780,12 +799,12 @@ const questions = [
 			{
 				"label" : "Yes",
 				"nextQ" : NaN,
-				"recommendation" : ["evaluateiratype", "maxira"]
+				"recommendation" : ["evaluateIraType", "maxIra"]
 			},
 			{
 				"label" : "No",
 				"nextQ" : NaN,
-				"recommendation" : ["maxtraditionalira"]
+				"recommendation" : ["maxTraditionalIra"]
 			}
 		]
 	},
@@ -797,7 +816,7 @@ const questions = [
 		"answers": [
 			{
 				"label" : "Yes",
-				"recommendation" : ["evaluateespp"]
+				"recommendation" : ["evaluateEspp"]
 			},
 			{
 				"label" : "No"
@@ -806,14 +825,14 @@ const questions = [
 	},
 	{
 		"id" : 15,
-		"question" : "Are you expecting any large, required purchases or personal investments (e.g., college) in the next 3-5 years?",
+		"question" : "Are you expecting any large purchases or personal investments (e.g., college) in the next 3-5 years?",
 		"type" : "radio",
 		"name" : "othergoals",
 		"answers": [
 			{
 				"label" : "Yes",
 				"nextQ" : NaN,
-				"recommendation" : ["othergoalsavings"]
+				"recommendation" : ["otherGoalSavings"]
 			},
 			{
 				"label" : "No",
@@ -830,7 +849,7 @@ const questions = [
 			{
 				"label" : "Yes",
 				"nextQ" : NaN,
-				"recommendation" : ["megabackdoor"]
+				"recommendation" : ["megaBackdoor"]
 			},
 			{
 				"label" : "No"
@@ -862,12 +881,12 @@ const questions = [
 			{
 				"label" : "Yes",
 				"nextQ" : NaN,
-				"recommendation" : ["mortgagepayments"]
+				"recommendation" : ["mortgagePayments"]
 			},
 			{
 				"label" : "No",
 				"nextQ" : NaN,
-				"recommendation" : ["taxablebrokerage", "taxharvesting", "lowinterestdebts", "donoradvisedfunds", "rebalanceportfolio"]
+				"recommendation" : ["taxableBrokerage", "taxHarvesting", "lowInterestDebts", "donorAdvisedFunds", "rebalancePortfolio"]
 			}
 		]
 	}
@@ -875,3 +894,8 @@ const questions = [
 
 
 let app = new FinancialCheckup("checkup__form--container", questions);
+function onPopStateHandler(event){ 
+	delete app; 
+	app = new FinancialCheckup("checkup__form--container", questions);
+};
+window.onpopstate = onPopStateHandler;
