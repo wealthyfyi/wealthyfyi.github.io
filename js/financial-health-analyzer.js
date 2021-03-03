@@ -91,7 +91,7 @@ class FormQuestion{
 		parentElement.className = "form__radio-group";
 		let legend = document.createElement("legend");
 		legend.className = "form__radio-legend";
-		legend.innerHTML = "Select the most accurate answer for your situation.";
+		//legend.innerHTML = "Select the most accurate answer for your situation.";
 		parentElement.appendChild(legend);
 		answers.forEach((answer) =>{
 			let answerElements = this.addFormInputElement(parentElement, "radio");
@@ -284,7 +284,7 @@ class FinancialCheckup{
 		if(searchParams.has('q')){
 			this.nextQ = parseInt(searchParams.get('q'));
 		}else{
-			this.nextQ = 1;
+			this.nextQ = 0;
 		}
 		this.results = new FinancialHealthFeedback();
 		this.nextquestion(this.nextQ);
@@ -471,7 +471,7 @@ class FinancialCheckup{
 	}
 	onquestioncomplete(){
 		// Pull the answers from the question
-		let answerelements = Array.from(document.getElementsByClassName("form__" + this.questions[this.questionIndex]["type"] + "-input"));
+		let answerelements = Array.from(document.getElementsByClassName("form__" + this.questions[this.nextQ]["type"] + "-input"));
 
 		// determine the next question ID
 		let workingNextQ = this.nextQ + 1;
@@ -551,14 +551,28 @@ class FinancialCheckup{
 			return;
 		}
 		let searchParams = new URLSearchParams(window.location.search);
-		this.questionIndex = this.nextQ - 1;
 		searchParams.set("q",this.nextQ);
 		history.replaceState(null,'',window.location.pathname + '?' + searchParams.toString());
-		this.currentQuestion = new Question(this.formId, this.questions[this.questionIndex], this.onquestioncomplete.bind(this));
+		this.currentQuestion = new Question(this.formId, this.questions[this.nextQ], this.onquestioncomplete.bind(this));
 	}
 }
 
 const questions = [
+	{
+		"id" : 0,
+		"question" : `<p style='font-size: 1.8rem; font-weight: normal; line-height: 2.7rem;'>Are you ready to accelerate your wealth building? We're going to ask you a series of questions about your finances.
+									The more accurately you answer them, the better we can tailor your results for you. Your situation may require consideration
+									of factors not accounted for by this site and its tools. When making financial decisions, you should talk to a 
+									fiduciary in your area who can take into consideration everything about your unique situation.</p>`,
+		"type" : "radio",
+		"name" : "termsofuse",
+		"answers" : [
+			{
+				"label" : "I understand and agree.",
+				"input-attributes" : {"required":true}
+			}
+		]
+	},
 	{
 		"id" : 1,
 		"question" : "What is your current employment situation?",
