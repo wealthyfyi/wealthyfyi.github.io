@@ -138,12 +138,21 @@ class FormQuestion{
 	}
 	onInputHandler(){
 		for(let element of this.inputElements){
-			if(element.value || element.checked){
-				document.getElementById("question__next-button").disabled = false;
-				return;
+			if("checkbox" == element.type
+			|| "radio" == element.type){
+				if(element.checked){
+					document.getElementById("question__next-button").disabled = false;
+					return;
+				}
+			} else if("number" == element.type
+			|| "text" == element.type){
+				if(element.value){
+					document.getElementById("question__next-button").disabled = false;
+					return;
+				}
 			}
+			document.getElementById("question__next-button").disabled = true;
 		}
-		document.getElementById("question__next-button").disabled = true;
 	}
 	addFormInputElement(parentElement, inputType){
 		let result = {};
@@ -303,7 +312,7 @@ class FinancialCheckup{
 			this.formElement.style.transition = "opacity .3s";
 		}
 		this.formElement.style.opacity = 0;
-		for(let child of this.formElement.children){
+		for(let child of this.formElement.childNodes){
 			child.classList.add("expirednode");
 		}
 		setTimeout(() =>{
@@ -376,6 +385,9 @@ class FinancialCheckup{
 				if(!maxedTraditionalIRA && !maxedRothIRA){
 					this.results.recommendations = "maxRothIra";
 					return NaN;
+				}
+				else {
+					return 14; 
 				}
 			}
 		}
@@ -496,7 +508,9 @@ class FinancialCheckup{
 				workingNextQ = this.handleSalary();
 				break;
 			case 15:
-				workingNextQ = this.handleLargePurchases();
+				if(!isNaN(workingNextQ)){
+					workingNextQ = this.handleLargePurchases();
+				}
 				break;
 				
 		}
@@ -705,16 +719,16 @@ const questions = [
 		"name" : "debttypes",
 		"answers": [
 			{
-				"label" : "High-interest debt e.g., credit card debt",
+				"label" : "Credit card debt or payday loans",
 				"nextQ" : NaN,
-				"recommendation" : ["highInterest", "avalancheMethod"],
+				"recommendation" : ["avalancheMethod", "highInterest"],
 				"input-attributes" : {"required":true}
 			},
 			{
-				"label" : "Moderate-interest debt, e.g., private student loans, personal line of credit"
+				"label" : "Private student loans or medical debt"
 			},
 			{
-				"label" : "Low-interest debt, e.g., mortgage, federal student loans"
+				"label" : "Car loan, mortgage, or federal student loans"
 			},
 			{
 				"label" : "None",
@@ -768,7 +782,7 @@ const questions = [
 			{
 				"label" : "No",
 				"nextQ" : NaN,
-				"recommendation" : ["hsaMax", "hsaFees"]
+				"recommendation" : ["hsaFees", "hsaMax"]
 			}
 		]
 	},
@@ -780,12 +794,12 @@ const questions = [
 		"answers": [
 			{
 				"label" : "Yes, my Traditional IRA",
-				"kudos" : ["maxTraditionalIRAKudo"],
+				"kudos" : ["maxTraditionalIraKudo"],
 				"input-attributes" : {"required":true}
 			},
 			{
 				"label" : "Yes, my Roth IRA",
-				"kudos" : ["maxRothIRAKudo"],
+				"kudos" : ["maxRothIraKudo"],
 				"nextQ" : 14
 			},
 			{
@@ -795,12 +809,12 @@ const questions = [
 	},
 	{
 		"id" : 12,
-		"question" : "What is your current annual income?",
+		"question" : "What is your total annual income?",
 		"type" : "number",
 		"name" : "magi",
 		"answers": [
 			{
-				"label" : "Annual income (include salary, stocks, and bonuses)"
+				"label" : "Annual income"
 			}
 		]
 	},
@@ -813,7 +827,7 @@ const questions = [
 			{
 				"label" : "Yes",
 				"nextQ" : NaN,
-				"recommendation" : ["evaluateIraType", "maxIra"]
+				"recommendation" : ["maxIra", "evaluateIraType"]
 			},
 			{
 				"label" : "No",
@@ -890,7 +904,7 @@ const questions = [
 		"id" : 18,
 		"question" : "Do you have a mortgage?",
 		"type" : "radio",
-		"name" : "children",
+		"name" : "mortgage",
 		"answers": [
 			{
 				"label" : "Yes",

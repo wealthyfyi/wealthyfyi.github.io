@@ -21,6 +21,14 @@ let kudos = {
 	hsaMaxKudo : {
 		subtitle: "A healthy future ahead of you",
 		brief: "Healthcare is expensive, and it increases with age. Fortunately, you're preparing for it by fully funding your Health Savings Account (HSA). Did you know an HSA is the best retirement account in America? There are no taxes on: <ul><li>the income that funds it,</li><li>the growth in the HSA, or </li><li>the withdrawals for eligible health expenses. </li>Pay out-of-pocket now if you can afford to. It'll pay off dramatically over time. Bonus tip: save all of your medical receipts and reimburse them with your HSA at any time in the future."
+	},
+	maxTraditionalIraKudo : {
+		subtitle: "Savings now & later",
+		brief: "Using a Traditional IRA account to invest will help your finances in the future and lower your tax bill this year. That's what we call a win-win!"
+	},
+	maxRothIraKudo : {
+		subtitle: "Delayed gratification",
+		brief: "Using a Roth IRA to invest means you are getting your taxes out of the way now. That money won't be taxed when you retire, no matter how much it grows."
 	}
 }
 let recommendations = {
@@ -48,7 +56,7 @@ let recommendations = {
 		brief: "\"High-interest\" debt is debt that is above the average rate-of-return for the stock market over time, which is about 7% adjusted for inflation. Investments have risk, whereas paying off high-interest debt does not."
 	},
 	avalancheMethod : {
-		subtitle: "Efficiently escape debt:",
+		subtitle: "Efficiently escape debt",
 		brief: "Make the minimum payments on all of your debts, then use any remaining money to pay off the debt with the highest interest rate. This method of paying off debt will save you the most money in interest payments."
 	},
 	increaseEfund1 : {
@@ -79,9 +87,13 @@ let recommendations = {
 		subtitle: "Rollover your Traditional IRA to a Roth IRA",
 		brief: "The federal government restricts high earners from contributing to a Roth IRA, but there's a loophole! If your income is above the limit (congratulations!), you can create a \"Backdoor\" Roth IRA. Convert your Traditional IRA to a Roth IRA to avoid tax on growth. You will need to pay tax on growth your money made while in the traditional IRA and cannot claim a deduction for the Traditional IRA contributions."
 	},
-	backdoor : {
+	backdoorRoth : {
 		subtitle: "Use the \"Backdoor\"",
 		brief: "The federal government restricts high earners from contributing to a Roth IRA, but there's a loophole! If your income is above the limit (congratulations!), you can create a \"Backdoor\" Roth IRA. First, put your money in a traditional IRA. Then, immediately convert your contribution to a Roth IRA to avoid tax on growth while in the Traditional IRA. You will not be able to claim a deduction for the contribution to the Traditional IRA."
+	},
+	maxRothIra : {
+		subtitle: "Tap into tax-free growth",
+		brief: "The money you invest in a Roth IRA grows tax-free. When you retire, you don't have to pay taxes on withdrawals. We suggest you contribute up to the IRS limit into a Roth IRA."
 	},
 	maxIra : {
 		subtitle: "Max out that IRA",
