@@ -296,7 +296,7 @@ class FinancialCheckup{
 			this.nextQ = 0;
 		}
 		this.results = new FinancialHealthFeedback();
-		this.nextquestion(this.nextQ);
+		this.nextquestion();
 	}
 	clearFormChildren(){
 		while(this.formElement.hasChildNodes()){
@@ -512,8 +512,8 @@ class FinancialCheckup{
 					workingNextQ = this.handleLargePurchases();
 				}
 				break;
-				
 		}
+		this._calculateNextQuestionId(workingNextQ);
 
 		// add any kudos and recommendations to the results
 		answerelements.forEach( (answer) => {
@@ -536,21 +536,32 @@ class FinancialCheckup{
 		// Clear the completed question from the form
 		this.formtransitionout();
 
+		// Update the progress bar
+		if(!Number.isNaN(this.nextQ)){
+			document.getElementsByTagName('progress-bar')[0].progress = this.nextQ / questions.length * 100;
+		} else {
+			document.getElementsByTagName('progress-bar')[0].progress = 100;
+		}
+		
 		// Setup the next question
-		setTimeout(()=>{this.nextquestion(workingNextQ);},300);
+		setTimeout(()=>{this.nextquestion();},300);
 
 		this.formtransitionin();
 	}
-
-	// null = increment question by 1
-	// NaN = exit survey
-	// any other number = question id
-	nextquestion(next){
+	_calculateNextQuestionId(next){
 		if(null == next){
 			this.nextQ += 1;
 		}else if(!isNaN(next)){
 			this.nextQ = next;
-		} else{ // NaN
+		} else{
+			this.nextQ = NaN;
+		}
+	}
+	// null = increment question by 1
+	// NaN = exit survey
+	// any other number = question id
+	nextquestion(){
+		 if(Number.isNaN(this.nextQ)){
 			// Exit the survey and show results
 			
 			let searchParams = new URLSearchParams({});
